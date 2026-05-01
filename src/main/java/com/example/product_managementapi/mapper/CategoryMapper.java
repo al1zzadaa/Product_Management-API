@@ -11,9 +11,9 @@ import java.util.List;
 @Mapper(componentModel = "spring")
 public interface CategoryMapper {
 
-    @Mapping(source = "id", target = "productId")
+    @Mapping(source = "name", target = "categoryName")
     CategoryResponse toDto(CategoryEntity categoryEntity);
-    @Mapping(source = "productId", target = "productId.id")
+    @Mapping(source = "categoryName", target = "name")
     CategoryEntity toEntity(CategoryRequest categoryRequest);
 
     List<CategoryResponse> toListDto(List<CategoryEntity> categoryEntities);

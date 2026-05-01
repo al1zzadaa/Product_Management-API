@@ -7,20 +7,20 @@ import java.math.BigDecimal;
 public class DiscountedPriceResponse {
     private Long id;
     private String name;
-    private BigDecimal originalPrice;
+    private BigDecimal finalPrice;
     private Integer discountPercent;
-    private BigDecimal discountedPrice;
+    private BigDecimal originalPrice;
 
     public DiscountedPriceResponse(Long id,
                                    String name,
-                                   BigDecimal originalPrice,
+                                   BigDecimal finalPrice,
                                    Integer discountPercent,
-                                   BigDecimal discountedPrice) {
+                                   BigDecimal originalPrice) {
         this.id = id;
         this.name = name;
-        this.originalPrice = originalPrice;
+        this.finalPrice = finalPrice;
         this.discountPercent = discountPercent;
-        this.discountedPrice = discountedPrice;
+        this.originalPrice = originalPrice;
     }
 
     @Override
@@ -28,9 +28,9 @@ public class DiscountedPriceResponse {
         return "DiscountedPriceResponse{" +
                 "id=" + id +
                 ", name='" + name + '\'' +
-                ", originalPrice=" + originalPrice +
+                ", finalPrice=" + finalPrice +
                 ", discountPercent=" + discountPercent +
-                ", discountedPrice=" + discountedPrice +
+                ", originalPrice=" + originalPrice +
                 '}';
     }
 
@@ -50,13 +50,12 @@ public class DiscountedPriceResponse {
         this.name = name;
     }
 
-
-    public BigDecimal getOriginalPrice() {
-        return originalPrice;
+    public BigDecimal getFinalPrice() {
+        return finalPrice;
     }
 
-    public void setOriginalPrice(BigDecimal originalPrice) {
-        this.originalPrice = originalPrice;
+    public void setFinalPrice(BigDecimal finalPrice) {
+        this.finalPrice = finalPrice;
     }
 
     public Integer getDiscountPercent() {
@@ -67,11 +66,13 @@ public class DiscountedPriceResponse {
         this.discountPercent = discountPercent;
     }
 
-    public BigDecimal getDiscountedPrice() {
-        return discountedPrice;
+    public BigDecimal getOriginalPrice() {
+        return originalPrice;
     }
 
-    public void setDiscountedPrice(BigDecimal discountedPrice) {
-        this.discountedPrice = discountedPrice;
+    public void setOriginalPrice(BigDecimal originalPrice) {
+        this.originalPrice = originalPrice;
     }
 }
+
+

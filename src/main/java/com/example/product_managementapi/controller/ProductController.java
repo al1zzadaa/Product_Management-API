@@ -36,11 +36,6 @@ public class ProductController {
         productService.deleteProduct(id);
     }
 
-    @PutMapping("/{id}")
-    public void updateProduct(@PathVariable Long id, @RequestBody UpdateProductRequestDto updateProductRequestDto) {
-        productService.updateProduct(id, updateProductRequestDto);
-    }
-
     @GetMapping("/search")
     public List<ProductResponseDto> getByName(@RequestParam String productName) {
         return productService.findByName(productName);
@@ -51,10 +46,6 @@ public class ProductController {
         return productService.getProductById(id);
     }
 
-    @GetMapping("/active-category/{category}")
-    public List<ProductResponseDto> getActiveProductsByCategory(@PathVariable String category) {
-        return productService.getProductsByCategory(category);
-    }
 
     @GetMapping("/filter")
     public List<ProductResponseDto> getProductsByPrice(@RequestParam BigDecimal minPrice, @RequestParam BigDecimal maxPrice) {
@@ -70,5 +61,11 @@ public class ProductController {
     public List<ProductResponseDto> getProductsByCategoryId(@PathVariable Long categoryId) {
         return productService.getProductsByCategoryId(categoryId);
     }
+
+    @PutMapping("/{productId}")
+    public void updateProduct(@PathVariable Long productId, @RequestBody UpdateProductRequestDto updateProductRequestDto) {
+        productService.updateProduct(productId, updateProductRequestDto);
+    }
+
 
 }

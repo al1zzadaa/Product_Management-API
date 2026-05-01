@@ -4,31 +4,42 @@ import com.example.product_managementapi.dto.request.UpdateProductRequestDto;
 import com.example.product_managementapi.dto.response.DiscountedPriceResponse;
 import com.example.product_managementapi.dto.request.ProductRequestDto;
 import com.example.product_managementapi.dto.response.ProductResponseDto;
+import com.example.product_managementapi.entity.CategoryEntity;
 import com.example.product_managementapi.entity.ProductEntity;
 import com.example.product_managementapi.exceptions.*;
 import com.example.product_managementapi.mapper.ProductMapper;
+import com.example.product_managementapi.repository.CategoryRepository;
 import com.example.product_managementapi.repository.ProductRepository;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.List;
 
 @Service
 public class ProductService {
     private final ProductRepository productRepository;
     private final ProductMapper productMapper;
+    private final CategoryRepository categoryRepository;
 
-    public ProductService(ProductRepository productRepository, ProductMapper productMapper) {
+    public ProductService(ProductRepository productRepository, ProductMapper productMapper, CategoryRepository categoryRepository) {
         this.productRepository = productRepository;
         this.productMapper = productMapper;
+        this.categoryRepository = categoryRepository;
     }
 
     public ProductResponseDto createProduct(ProductRequestDto productRequest) {
+
+        CategoryEntity category = categoryRepository.findById(productRequest.getCategoryId())
+                .orElseThrow(()-> new CategoryException("Category Not Found"));
+
         if(productRequest.getProductName()==null || productRequest.getProductName().isBlank()){
             throw new ProductException("Product name is empty");
         }
-
         ProductEntity productEntity = productMapper.productToProductEntity(productRequest);
+
+        productEntity.setCategory(category);
+
         ProductEntity savedProduct = productRepository.save(productEntity);
 
         return productMapper.productEntityToProduct(savedProduct);
@@ -51,6 +62,8 @@ public class ProductService {
     }
 
     public List<ProductResponseDto> getProducts() {
+
+
         List<ProductEntity> productEntities = productRepository.findAll();
         List<ProductResponseDto> productResponseDtos = productMapper.productEntitiesToProduct(productEntities);
 
@@ -59,6 +72,9 @@ public class ProductService {
 
     public void updateProduct(Long id, UpdateProductRequestDto updateProductRequestDto) {
 
+        if (updateProductRequestDto.getName()==null || updateProductRequestDto.getName().isBlank()) {
+            throw new ProductException("Product name is empty");
+        }
         ProductEntity prod = productRepository.findById(id)
                 .orElseThrow(() -> new IdException("Product with id " + id + " not found"));
 
@@ -67,17 +83,6 @@ public class ProductService {
         productRepository.save(prod);
     }
 
-    public List<ProductResponseDto> getProductsByCategory(String category) {
-        if (category==null||category.isEmpty()){
-            throw new CategoryException("Category is empty");
-        }
-        List<ProductEntity> productEntities = productRepository.findByCategoryAndActiveTrue(category);
-
-        return productEntities
-                .stream().map(product ->
-                        productMapper.productEntityToProduct(product))
-                .toList();
-    }
 
     public DiscountedPriceResponse getDiscountedPrice(Long id, Integer percent) {
         if(percent == null){
@@ -89,7 +94,7 @@ public class ProductService {
         BigDecimal price = prod.getPrice();
         BigDecimal discount = price
                 .multiply(BigDecimal.valueOf(percent))
-                .divide(BigDecimal.valueOf(100));
+                .divide(BigDecimal.valueOf(100), 2, RoundingMode.HALF_UP);
 
         BigDecimal discountedPrice = price.subtract(discount);
 

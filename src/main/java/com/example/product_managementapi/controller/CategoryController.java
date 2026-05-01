@@ -2,6 +2,7 @@ package com.example.product_managementapi.controller;
 
 import com.example.product_managementapi.dto.request.CategoryRequest;
 import com.example.product_managementapi.dto.response.CategoryResponse;
+import com.example.product_managementapi.dto.response.ProductResponseDto;
 import com.example.product_managementapi.service.CategoryService;
 import org.springframework.web.bind.annotation.*;
 
@@ -18,7 +19,7 @@ public class CategoryController {
 
     @GetMapping
     public List<CategoryResponse> getCategories(){
-        return categoryService.getCategories();
+        return categoryService.findAllCategories();
     }
 
     @GetMapping("/{id}")
@@ -30,6 +31,21 @@ public class CategoryController {
     public CategoryResponse createCategory(@RequestBody CategoryRequest categoryRequest){
         return categoryService.createCategory(categoryRequest);
     }
+
+    @GetMapping("/name")
+    public CategoryResponse getCategoryByName(@RequestParam String name){
+        return categoryService.getCategoryByName(name);
+    }
+
+    @DeleteMapping("/{id}")
+    public void deleteCategoryById(@PathVariable Long id){
+        categoryService.deleteCategoryById(id);
+    }
+
+//    @GetMapping("/active-category")
+//    public List<ProductResponseDto> getActiveProductsByCategory(@RequestParam String category) {
+//        return categoryService.getProductsByCategory(category);
+//    }
 
 
 }

@@ -1,8 +1,6 @@
 package com.example.product_managementapi.dto.response;
 
 
-import com.example.product_managementapi.entity.CategoryEntity;
-
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.List;
@@ -14,41 +12,27 @@ public class ProductResponseDto {
     private String description;
     private BigDecimal price;
     private Integer quantity;
-    private String categoryName;
+    private Long categoryId;
+//    private CategoryResponse categoryResponse;
     private String active;
     private LocalDateTime createdAt;
-    private List<String> reviews;
+    private List<String> allReviews;
     private BigDecimal totalPrice;
 
-
-    public ProductResponseDto(Long id,
-                              String productName,
-                              String description,
-                              BigDecimal price,
-                              Integer quantity,
-                              String categoryName,
-                              String active,
-                              LocalDateTime createdAt,
-                              List<String> reviews,
-                              BigDecimal totalPrice) {
-        this.id = id;
-        this.productName = productName;
-        this.description = description;
-        this.price = price;
-        this.quantity = quantity;
-        this.categoryName = categoryName;
-        this.active = active;
-        this.createdAt = createdAt;
-        this.reviews = reviews;
-        this.totalPrice = totalPrice;
-    }
-
-    public BigDecimal getTotalPrice() {
-        return totalPrice;
-    }
-
-    public void setTotalPrice(BigDecimal totalPrice) {
-        this.totalPrice = totalPrice;
+    @Override
+    public String toString() {
+        return "ProductResponseDto{" +
+                "id=" + id +
+                ", productName='" + productName + '\'' +
+                ", description='" + description + '\'' +
+                ", price=" + price +
+                ", quantity=" + quantity +
+                ", categoryId=" + categoryId +
+                ", active='" + active + '\'' +
+                ", createdAt=" + createdAt +
+                ", allReviews=" + allReviews +
+                ", totalPrice=" + totalPrice +
+                '}';
     }
 
     public Long getId() {
@@ -91,12 +75,12 @@ public class ProductResponseDto {
         this.quantity = quantity;
     }
 
-    public String getCategoryName() {
-        return categoryName;
+    public Long getCategoryId() {
+        return categoryId;
     }
 
-    public void setCategoryName(String categoryName) {
-        this.categoryName = categoryName;
+    public void setCategoryId(Long categoryId) {
+        this.categoryId = categoryId;
     }
 
     public String getActive() {
@@ -115,11 +99,32 @@ public class ProductResponseDto {
         this.createdAt = createdAt;
     }
 
-    public List<String> getReviews() {
-        return reviews;
+    public List<String> getAllReviews() {
+        return allReviews;
     }
 
-    public void setReviews(List<String> reviews) {
-        this.reviews = reviews;
+    public void setAllReviews(List<String> allReviews) {
+        this.allReviews = allReviews;
+    }
+
+    public BigDecimal getTotalPrice() {
+        return totalPrice;
+    }
+
+    public void setTotalPrice(BigDecimal totalPrice) {
+        this.totalPrice = totalPrice;
+    }
+
+    public ProductResponseDto(Long id, String productName, String description, BigDecimal price, Integer quantity, Long categoryId, String active, LocalDateTime createdAt, List<String> allReviews, BigDecimal totalPrice) {
+        this.id = id;
+        this.productName = productName;
+        this.description = description;
+        this.price = price;
+        this.quantity = quantity;
+        this.categoryId = categoryId;
+        this.active = active;
+        this.createdAt = createdAt;
+        this.allReviews = allReviews;
+        this.totalPrice = totalPrice;
     }
 }

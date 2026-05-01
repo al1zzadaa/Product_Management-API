@@ -10,19 +10,9 @@ public class ProductRequestDto {
     private String description;
     private BigDecimal price;
     private Integer quantity;
-    private String categoryName;
-    private ProductStatus active;
+    private Long categoryId;
+    private String active;
     private LocalDateTime createDate;
-
-    public ProductRequestDto(String productName, String description, BigDecimal price, Integer quantity, String categoryName, ProductStatus active) {
-        this.productName = productName;
-        this.description = description;
-        this.price = price;
-        this.quantity = quantity;
-        this.categoryName = categoryName;
-        this.active = active;
-        this.createDate = LocalDateTime.now();
-    }
 
     @Override
     public String toString() {
@@ -31,7 +21,7 @@ public class ProductRequestDto {
                 ", description='" + description + '\'' +
                 ", price=" + price +
                 ", quantity=" + quantity +
-                ", categoryName='" + categoryName + '\'' +
+                ", categoryId=" + categoryId +
                 ", active=" + active +
                 ", createDate=" + createDate +
                 '}';
@@ -69,19 +59,19 @@ public class ProductRequestDto {
         this.quantity = quantity;
     }
 
-    public String getCategoryName() {
-        return categoryName;
+    public Long getCategoryId() {
+        return categoryId;
     }
 
-    public void setCategoryName(String categoryName) {
-        this.categoryName = categoryName;
+    public void setCategoryId(Long categoryId) {
+        this.categoryId = categoryId;
     }
 
-    public ProductStatus getActive() {
+    public String getActive() {
         return active;
     }
 
-    public void setActive(ProductStatus active) {
+    public void setActive(String active) {
         this.active = active;
     }
 
@@ -91,5 +81,15 @@ public class ProductRequestDto {
 
     public void setCreateDate(LocalDateTime createDate) {
         this.createDate = createDate;
+    }
+
+    public ProductRequestDto(String productName, String description, BigDecimal price, Integer quantity, Long categoryId, String active) {
+        this.productName = productName;
+        this.description = description;
+        this.price = price;
+        this.quantity = quantity;
+        this.categoryId = categoryId;
+        this.active = active.toUpperCase();
+        this.createDate = LocalDateTime.now();
     }
 }

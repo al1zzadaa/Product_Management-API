@@ -1,25 +1,18 @@
 package com.example.product_managementapi.dto.response;
 
+import java.util.List;
+
 public class CategoryResponse {
     private Long categoryId;
     private String categoryName;
-    private Long productId;
-    private String productName;
-
-    public CategoryResponse(Long categoryId, String categoryName, Long productId, String productName) {
-        this.categoryId = categoryId;
-        this.categoryName = categoryName;
-        this.productId = productId;
-        this.productName = productName;
-    }
+    private List<ProductResponseDto> productResponseDtoList;
 
     @Override
     public String toString() {
         return "CategoryResponse{" +
                 "categoryId=" + categoryId +
                 ", categoryName='" + categoryName + '\'' +
-                ", productId=" + productId +
-                ", productName='" + productName + '\'' +
+                ", productResponseDtoList=" + productResponseDtoList +
                 '}';
     }
 
@@ -39,19 +32,17 @@ public class CategoryResponse {
         this.categoryName = categoryName;
     }
 
-    public Long getProductId() {
-        return productId;
+    public List<ProductResponseDto> getProductResponseDtoList() {
+        return productResponseDtoList;
     }
 
-    public void setProductId(Long productId) {
-        this.productId = productId;
+    public void setProductResponseDtoList(List<ProductResponseDto> productResponseDtoList) {
+        this.productResponseDtoList = productResponseDtoList;
     }
 
-    public String getProductName() {
-        return productName;
-    }
-
-    public void setProductName(String productName) {
-        this.productName = productName;
+    public CategoryResponse(Long categoryId, String categoryName, List<ProductResponseDto> productResponseDtoList) {
+        this.categoryId = categoryId;
+        this.categoryName = categoryName;
+        this.productResponseDtoList = productResponseDtoList;
     }
 }

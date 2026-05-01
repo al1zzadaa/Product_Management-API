@@ -3,17 +3,10 @@ package com.example.product_managementapi.dto.response;
 import java.time.LocalDateTime;
 
 public class ReviewResponse {
-    private Integer reviewId;
+    private Long reviewId;
     private String reviewContent;
     private LocalDateTime reviewDate;
-    private Integer productId;
-
-    public ReviewResponse(Integer reviewId, String reviewContent, LocalDateTime reviewDate, Integer productId) {
-        this.reviewId = reviewId;
-        this.reviewContent = reviewContent;
-        this.reviewDate = reviewDate;
-        this.productId = productId;
-    }
+    private Long productId;
 
     @Override
     public String toString() {
@@ -25,11 +18,11 @@ public class ReviewResponse {
                 '}';
     }
 
-    public Integer getReviewId() {
+    public Long getReviewId() {
         return reviewId;
     }
 
-    public void setReviewId(Integer reviewId) {
+    public void setReviewId(Long reviewId) {
         this.reviewId = reviewId;
     }
 
@@ -49,11 +42,18 @@ public class ReviewResponse {
         this.reviewDate = reviewDate;
     }
 
-    public Integer getProductId() {
+    public Long getProductId() {
         return productId;
     }
 
-    public void setProductId(Integer productId) {
+    public void setProductId(Long productId) {
+        this.productId = productId;
+    }
+
+    public ReviewResponse(Long reviewId, String reviewContent, LocalDateTime reviewDate, Long productId) {
+        this.reviewId = reviewId;
+        this.reviewContent = reviewContent;
+        this.reviewDate = reviewDate;
         this.productId = productId;
     }
 }

@@ -8,17 +8,17 @@ public class UpdateProductRequestDto {
     private String description;
     private BigDecimal price;
     private Integer quantity;
-    private String category;
     private String active;
     private LocalDateTime updateDate;
+    private Long categoryId;
 
 
-    public UpdateProductRequestDto(String name, String description, BigDecimal price, Integer quantity, String category, String active) {
+    public UpdateProductRequestDto(String name, String description, BigDecimal price, Integer quantity,String active, Long categoryId) {
         this.name = name;
         this.description = description;
         this.price = price;
         this.quantity = quantity;
-        this.category = category;
+        this.categoryId = categoryId;
         this.active = active;
         this.updateDate = LocalDateTime.now();
     }
@@ -30,7 +30,7 @@ public class UpdateProductRequestDto {
                 ", description='" + description + '\'' +
                 ", price=" + price +
                 ", quantity=" + quantity +
-                ", category='" + category + '\'' +
+                ", category='" + categoryId + '\'' +
                 ", active='" + active + '\'' +
                 ", updateDate=" + updateDate +
                 '}';
@@ -68,14 +68,6 @@ public class UpdateProductRequestDto {
         this.quantity = quantity;
     }
 
-    public String getCategory() {
-        return category;
-    }
-
-    public void setCategory(String category) {
-        this.category = category;
-    }
-
     public String getActive() {
         return active;
     }
@@ -90,5 +82,13 @@ public class UpdateProductRequestDto {
 
     public void setUpdateDate(LocalDateTime updateDate) {
         this.updateDate = updateDate;
+    }
+
+    public Long getCategoryId() {
+        return categoryId;
+    }
+
+    public void setCategoryId(Long categoryId) {
+        this.categoryId = categoryId;
     }
 }

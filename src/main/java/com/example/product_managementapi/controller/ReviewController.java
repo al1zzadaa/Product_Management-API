@@ -16,11 +16,6 @@ public class ReviewController {
         this.reviewService = reviewService;
     }
 
-    @GetMapping
-    public List<ReviewResponse> getReviews() {
-        return reviewService.getReviews();
-    }
-
     @GetMapping("/{reviewId}")
     public ReviewResponse getReviewById(@PathVariable Long reviewId) {
         return reviewService.getReviewById(reviewId);
@@ -31,7 +26,12 @@ public class ReviewController {
         return reviewService.createReview(reviewRequest);
     }
 
-    @GetMapping("/{productId}/product")
+    @DeleteMapping("/{reviewId}")
+    public void deleteReviewById(@PathVariable Long reviewId) {
+        reviewService.deleteReviewById(reviewId);
+    }
+
+    @GetMapping("/product/{productId}")
     public List<ReviewResponse> getReviewsByProductId(@PathVariable Long productId) {
         return reviewService.findReviewsByProductId(productId);
     }

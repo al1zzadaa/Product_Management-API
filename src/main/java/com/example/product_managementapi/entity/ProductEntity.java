@@ -8,6 +8,8 @@ import jakarta.persistence.Table;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.util.List;
+
 import jakarta.persistence.*;
 import org.hibernate.annotations.CreationTimestamp;
 
@@ -23,16 +25,18 @@ public class ProductEntity {
     private String description;
     private BigDecimal price;
     private Integer quantity;
-    @ManyToOne
-    @JoinColumn(name = "category")
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "category_id")
     private CategoryEntity category;
     @Enumerated(EnumType.STRING)
     private ProductStatus active;
     @CreationTimestamp
     private LocalDateTime createdAt;
-    @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "category_id")
-    private CategoryEntity categoryId;
+
+    //oprhanremoval is for adapting list and db
+    //bcs if we delete from list it can still stay in db
+    @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<ReviewEntity> reviews;
 
     public Long getId() {
         return id;
@@ -98,11 +102,11 @@ public class ProductEntity {
         this.createdAt = createdAt;
     }
 
-    public CategoryEntity getCategoryId() {
-        return categoryId;
+    public List<ReviewEntity> getReviews() {
+        return reviews;
     }
 
-    public void setCategoryId(CategoryEntity categoryId) {
-        this.categoryId = categoryId;
+    public void setReviews(List<ReviewEntity> reviews) {
+        this.reviews = reviews;
     }
 }
