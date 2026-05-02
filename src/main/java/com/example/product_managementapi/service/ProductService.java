@@ -6,6 +6,7 @@ import com.example.product_managementapi.dto.request.ProductRequestDto;
 import com.example.product_managementapi.dto.response.ProductResponseDto;
 import com.example.product_managementapi.entity.CategoryEntity;
 import com.example.product_managementapi.entity.ProductEntity;
+import com.example.product_managementapi.enums.ProductStatus;
 import com.example.product_managementapi.exceptions.*;
 import com.example.product_managementapi.mapper.ProductMapper;
 import com.example.product_managementapi.repository.CategoryRepository;
@@ -65,9 +66,8 @@ public class ProductService {
 
 
         List<ProductEntity> productEntities = productRepository.findAll();
-        List<ProductResponseDto> productResponseDtos = productMapper.productEntitiesToProduct(productEntities);
 
-        return productResponseDtos;
+        return productMapper.productEntitiesToProduct(productEntities);
     }
 
     public void updateProduct(Long id, UpdateProductRequestDto updateProductRequestDto) {
@@ -132,4 +132,26 @@ public class ProductService {
         List<ProductEntity> productEntities = productRepository.findByCategoryId(categoryId);
         return productMapper.productEntitiesToProduct(productEntities);
     }
+
+
+    public List<ProductResponseDto> getProductsByCategory(String category, ProductStatus active){
+        if(category == null || category.isBlank()) {
+            throw new CategoryException("Category Not Found");
+        }
+
+        if (active==null) {
+            throw new StatusException("Product Status is empty");
+        }
+
+        if (active == ProductStatus.ACTIVE) {
+            List<ProductEntity> productEntities = productRepository.findActiveProductsByCategory_NameAndActive(category, active);
+            return productMapper.productEntitiesToProduct(productEntities);
+        }if (active == ProductStatus.INACTIVE) {
+            List<ProductEntity> productEntities = productRepository.findActiveProductsByCategory_NameAndActive(category, active);
+            return productMapper.productEntitiesToProduct(productEntities);
+        }
+        return null;
+    }
+
+
 }

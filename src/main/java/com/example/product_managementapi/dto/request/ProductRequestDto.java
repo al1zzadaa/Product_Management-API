@@ -1,6 +1,5 @@
 package com.example.product_managementapi.dto.request;
 
-import com.example.product_managementapi.enums.ProductStatus;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;

@@ -16,26 +16,27 @@ public interface ProductMapper {
     @Mapping(source = "categoryId", target = "category.id")
     ProductEntity productToProductEntity(ProductRequestDto productRequest);
 
+
     @Mapping(target = "totalPrice",
             expression = "java(productEntity.getPrice().multiply(BigDecimal.valueOf(productEntity.getQuantity())))")
     @Mapping(source = "name", target = "productName")
-//    @Mapping(source = "category.id", target = "categoryResponse.categoryId")
-//    @Mapping(source = "category.name", target = "categoryResponse.categoryName")
-//    @Mapping(source = "category.products", target = "categoryResponse.productResponseDtoList")
+//    @Mapping(target = "allReviews",
+//            expression = "java(productEntity.getReviews().stream().map(ReviewEntity :: getReviews).toList())")
     @Mapping(source = "reviews", target = "allReviews")
     @Mapping(source = "category.id", target = "categoryId")
     ProductResponseDto productEntityToProduct(ProductEntity productEntity);
 
+
     default String map(ReviewEntity review) {
         return review.getReview();
     }
-
 
     @Mapping(target = "createdAt", ignore = true)
     @Mapping(target = "id", ignore = true)
     @BeanMapping(nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
     @Mapping(source = "categoryId", target = "category.id")
     void updateProduct(UpdateProductRequestDto updateProductRequestDto, @MappingTarget ProductEntity productEntity);
+
 
     List<ProductResponseDto> productEntitiesToProduct(List<ProductEntity> entities);
 }

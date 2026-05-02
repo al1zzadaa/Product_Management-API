@@ -32,11 +32,15 @@ public class ProductEntity {
     private ProductStatus active;
     @CreationTimestamp
     private LocalDateTime createdAt;
-
     //oprhanremoval is for adapting list and db
     //bcs if we delete from list it can still stay in db
     @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<ReviewEntity> reviews;
+
+
+
+
+
 
     public Long getId() {
         return id;

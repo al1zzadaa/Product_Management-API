@@ -13,7 +13,6 @@ public class ProductResponseDto {
     private BigDecimal price;
     private Integer quantity;
     private Long categoryId;
-//    private CategoryResponse categoryResponse;
     private String active;
     private LocalDateTime createdAt;
     private List<String> allReviews;

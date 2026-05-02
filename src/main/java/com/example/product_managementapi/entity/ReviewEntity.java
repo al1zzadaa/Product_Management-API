@@ -21,10 +21,11 @@ public class ReviewEntity {
     private String review;
     @CreationTimestamp
     private LocalDateTime reviewDate;
-
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "product_id")
     private ProductEntity product;
+
+
 
 
     public LocalDateTime getReviewDate() {

@@ -17,6 +17,8 @@ public class CategoryEntity {
     @OneToMany(mappedBy = "category", fetch = FetchType.LAZY)
     private List<ProductEntity> products;
 
+
+
     public Long getId() {
         return id;
     }
