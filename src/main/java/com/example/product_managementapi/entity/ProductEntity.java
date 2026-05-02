@@ -25,7 +25,7 @@ public class ProductEntity {
     private String description;
     private BigDecimal price;
     private Integer quantity;
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "category_id")
     private CategoryEntity category;
     @Enumerated(EnumType.STRING)

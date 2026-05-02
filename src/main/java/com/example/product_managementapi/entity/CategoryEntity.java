@@ -14,7 +14,7 @@ public class CategoryEntity {
     private String name;
     //mappedBy helps hibernate to understand which field he needs to
     //take for relationship from ProductEntity and not create a new relationship
-    @OneToMany(mappedBy = "category", fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "category", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private List<ProductEntity> products;
 
 

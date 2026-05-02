@@ -32,9 +32,9 @@ public class ProductService {
     public ProductResponseDto createProduct(ProductRequestDto productRequest) {
 
         CategoryEntity category = categoryRepository.findById(productRequest.getCategoryId())
-                .orElseThrow(()-> new CategoryException("Category Not Found"));
+                .orElseThrow(() -> new CategoryException("Category Not Found"));
 
-        if(productRequest.getProductName()==null || productRequest.getProductName().isBlank()){
+        if (productRequest.getProductName() == null || productRequest.getProductName().isBlank()) {
             throw new ProductException("Product name is empty");
         }
         ProductEntity productEntity = productMapper.productToProductEntity(productRequest);
@@ -72,7 +72,7 @@ public class ProductService {
 
     public void updateProduct(Long id, UpdateProductRequestDto updateProductRequestDto) {
 
-        if (updateProductRequestDto.getName()==null || updateProductRequestDto.getName().isBlank()) {
+        if (updateProductRequestDto.getName() == null || updateProductRequestDto.getName().isBlank()) {
             throw new ProductException("Product name is empty");
         }
         ProductEntity prod = productRepository.findById(id)
@@ -85,8 +85,8 @@ public class ProductService {
 
 
     public DiscountedPriceResponse getDiscountedPrice(Long id, Integer percent) {
-        if(percent == null){
-           throw new PercentException("Percent is empty");
+        if (percent == null) {
+            throw new PercentException("Percent is empty");
         }
         ProductEntity prod = productRepository.findById(id)
                 .orElseThrow(() -> new IdException("Product with id " + id + " not found"));
@@ -134,23 +134,17 @@ public class ProductService {
     }
 
 
-    public List<ProductResponseDto> getProductsByCategory(String category, ProductStatus active){
-        if(category == null || category.isBlank()) {
+    public List<ProductResponseDto> getProductsByCategory(String category, ProductStatus active) {
+        if (category == null || category.isBlank()) {
             throw new CategoryException("Category Not Found");
         }
 
-        if (active==null) {
+        if (active == null) {
             throw new StatusException("Product Status is empty");
         }
 
-        if (active == ProductStatus.ACTIVE) {
-            List<ProductEntity> productEntities = productRepository.findActiveProductsByCategory_NameAndActive(category, active);
-            return productMapper.productEntitiesToProduct(productEntities);
-        }if (active == ProductStatus.INACTIVE) {
-            List<ProductEntity> productEntities = productRepository.findActiveProductsByCategory_NameAndActive(category, active);
-            return productMapper.productEntitiesToProduct(productEntities);
-        }
-        return null;
+        List<ProductEntity> productEntities = productRepository.findActiveProductsByCategory_NameAndActive(category, active);
+        return productMapper.productEntitiesToProduct(productEntities);
     }
 
 
