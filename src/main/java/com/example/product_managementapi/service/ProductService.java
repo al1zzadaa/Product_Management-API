@@ -4,13 +4,12 @@ import com.example.product_managementapi.dto.request.UpdateProductRequestDto;
 import com.example.product_managementapi.dto.response.DiscountedPriceResponse;
 import com.example.product_managementapi.dto.request.ProductRequestDto;
 import com.example.product_managementapi.dto.response.ProductResponseDto;
-import com.example.product_managementapi.entity.CategoryEntity;
 import com.example.product_managementapi.entity.ProductEntity;
 import com.example.product_managementapi.enums.ProductStatus;
 import com.example.product_managementapi.exceptions.*;
 import com.example.product_managementapi.mapper.ProductMapper;
-import com.example.product_managementapi.repository.CategoryRepository;
 import com.example.product_managementapi.repository.ProductRepository;
+import com.example.product_managementapi.utill.ValidationUtil;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
@@ -21,25 +20,19 @@ import java.util.List;
 public class ProductService {
     private final ProductRepository productRepository;
     private final ProductMapper productMapper;
-    private final CategoryRepository categoryRepository;
+    private final ValidationUtil validationUtil;
 
-    public ProductService(ProductRepository productRepository, ProductMapper productMapper, CategoryRepository categoryRepository) {
+    public ProductService(ProductRepository productRepository, ProductMapper productMapper, ValidationUtil validationUtil) {
         this.productRepository = productRepository;
         this.productMapper = productMapper;
-        this.categoryRepository = categoryRepository;
+        this.validationUtil = validationUtil;
     }
 
     public ProductResponseDto createProduct(ProductRequestDto productRequest) {
 
-        CategoryEntity category = categoryRepository.findById(productRequest.getCategoryId())
-                .orElseThrow(() -> new CategoryException("Category Not Found"));
+        validationUtil.validateName(productRequest.getProductName());
 
-        if (productRequest.getProductName() == null || productRequest.getProductName().isBlank()) {
-            throw new ProductException("Product name is empty");
-        }
         ProductEntity productEntity = productMapper.productToProductEntity(productRequest);
-
-        productEntity.setCategory(category);
 
         ProductEntity savedProduct = productRepository.save(productEntity);
 
@@ -47,23 +40,28 @@ public class ProductService {
     }
 
     public void deleteProduct(Long id) {
+
+        validationUtil.validateId(id);
+
         if (productRepository.findById(id).isPresent()) {
             productRepository.deleteById(id);
         } else {
-            throw new IdException("Product with id " + id + " not found");
+            throw new NotFoundException("Product with id " + id + " not found");
         }
     }
 
     public ProductResponseDto getProductById(Long id) {
+
+        validationUtil.validateId(id);
+
         ProductEntity productEntity = productRepository.findById(id)
-                .orElseThrow(() -> new IdException("Product wit id " + id + " not exists"));
+                .orElseThrow(() -> new NotFoundException("Product wit id " + id + " not exists"));
 
         ProductResponseDto productResponseDto = productMapper.productEntityToProduct(productEntity);
         return productResponseDto;
     }
 
     public List<ProductResponseDto> getProducts() {
-
 
         List<ProductEntity> productEntities = productRepository.findAll();
 
@@ -72,11 +70,12 @@ public class ProductService {
 
     public void updateProduct(Long id, UpdateProductRequestDto updateProductRequestDto) {
 
-        if (updateProductRequestDto.getName() == null || updateProductRequestDto.getName().isBlank()) {
-            throw new ProductException("Product name is empty");
-        }
+        validationUtil.validateId(id);
+
+        validationUtil.validateName(updateProductRequestDto.getName());
+
         ProductEntity prod = productRepository.findById(id)
-                .orElseThrow(() -> new IdException("Product with id " + id + " not found"));
+                .orElseThrow(() -> new NotFoundException("Product with id " + id + " not found"));
 
         productMapper.updateProduct(updateProductRequestDto, prod);
 
@@ -85,13 +84,18 @@ public class ProductService {
 
 
     public DiscountedPriceResponse getDiscountedPrice(Long id, Integer percent) {
-        if (percent == null) {
-            throw new PercentException("Percent is empty");
-        }
+
+        validationUtil.validateId(id);
+
+        validationUtil.validatePercent(percent);
+
         ProductEntity prod = productRepository.findById(id)
-                .orElseThrow(() -> new IdException("Product with id " + id + " not found"));
+                .orElseThrow(() -> new NotFoundException("Product with id " + id + " not found"));
 
         BigDecimal price = prod.getPrice();
+
+        validationUtil.validatePrice(price);
+
         BigDecimal discount = price
                 .multiply(BigDecimal.valueOf(percent))
                 .divide(BigDecimal.valueOf(100), 2, RoundingMode.HALF_UP);
@@ -108,9 +112,8 @@ public class ProductService {
     }
 
     public List<ProductResponseDto> findByName(String productName) {
-        if (productName == null || productName.isEmpty()) {
-            throw new NameException("Product's name is empty");
-        }
+
+        validationUtil.validateName(productName);
 
         List<ProductEntity> productEntity = productRepository.findByNameContainingIgnoreCase(productName);
 
@@ -128,22 +131,22 @@ public class ProductService {
     }
 
 
-    public List<ProductResponseDto> getProductsByCategoryId(Long categoryId) {
-        List<ProductEntity> productEntities = productRepository.findByCategoryId(categoryId);
+    public List<ProductResponseDto> getProductsByCategoryId(Long category) {
+
+        validationUtil.validateId(category);
+
+        List<ProductEntity> productEntities = productRepository.findByCategoriesId(category);
         return productMapper.productEntitiesToProduct(productEntities);
     }
 
 
     public List<ProductResponseDto> getProductsByCategory(String category, ProductStatus active) {
-        if (category == null || category.isBlank()) {
-            throw new CategoryException("Category Not Found");
-        }
 
-        if (active == null) {
-            throw new StatusException("Product Status is empty");
-        }
+        validationUtil.validateName(category);
 
-        List<ProductEntity> productEntities = productRepository.findActiveProductsByCategory_NameAndActive(category, active);
+        validationUtil.validateStatus(active);
+
+        List<ProductEntity> productEntities = productRepository.findActiveProductsByCategoryNameAndActive(category, active);
         return productMapper.productEntitiesToProduct(productEntities);
     }
 

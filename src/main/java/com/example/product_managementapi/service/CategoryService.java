@@ -2,10 +2,10 @@ package com.example.product_managementapi.service;
 import com.example.product_managementapi.dto.request.CategoryRequest;
 import com.example.product_managementapi.dto.response.CategoryResponse;
 import com.example.product_managementapi.entity.CategoryEntity;
-import com.example.product_managementapi.exceptions.CategoryException;
-import com.example.product_managementapi.exceptions.IdException;
+import com.example.product_managementapi.exceptions.NotFoundException;
 import com.example.product_managementapi.mapper.CategoryMapper;
 import com.example.product_managementapi.repository.CategoryRepository;
+import com.example.product_managementapi.utill.ValidationUtil;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -14,15 +14,20 @@ import java.util.List;
 public class CategoryService {
     private final CategoryRepository categoryRepository;
     private final CategoryMapper categoryMapper;
+    private final ValidationUtil validationUtil;
 
-    public CategoryService(CategoryRepository categoryRepository, CategoryMapper categoryMapper) {
+    public CategoryService(CategoryRepository categoryRepository, CategoryMapper categoryMapper, ValidationUtil validationUtil, ValidationUtil validationUtil1) {
         this.categoryRepository = categoryRepository;
         this.categoryMapper = categoryMapper;
+        this.validationUtil = validationUtil1;
     }
 
     public CategoryResponse getCategoryById(Long id){
+
+        validationUtil.validateId(id);
+
         CategoryEntity categoryEntity = categoryRepository.findById(id)
-                .orElseThrow(() -> new IdException("Category Not Found"));
+                .orElseThrow(() -> new NotFoundException("Category Not Found"));
         return categoryMapper.toDto(categoryEntity);
     }
 
@@ -32,14 +37,20 @@ public class CategoryService {
     }
 
     public void deleteCategoryById(Long id){
+
+        validationUtil.validateId(id);
+
         if(categoryRepository.existsById(id)){
             categoryRepository.deleteById(id);
         }
     }
 
     public CategoryResponse getCategoryByName(String name){
+
+        validationUtil.validateName(name);
+
         CategoryEntity categoryEntity = categoryRepository.findByNameIgnoreCase(name)
-                .orElseThrow(()-> new CategoryException("Category Not Found"));
+                .orElseThrow(()-> new NotFoundException("Category Not Found"));
         return categoryMapper.toDto(categoryEntity);
     }
 

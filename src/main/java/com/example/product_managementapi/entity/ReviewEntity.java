@@ -27,7 +27,6 @@ public class ReviewEntity {
 
 
 
-
     public LocalDateTime getReviewDate() {
         return reviewDate;
     }

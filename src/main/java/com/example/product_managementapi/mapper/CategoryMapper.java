@@ -18,6 +18,8 @@ public interface CategoryMapper {
     @Mapping(source = "name", target = "categoryName")
     @Mapping(source = "products", target = "productResponseDtoList")
     CategoryResponse toDto(CategoryEntity categoryEntity);
+
+
     @Mapping(source = "categoryName", target = "name")
     CategoryEntity toEntity(CategoryRequest categoryRequest);
 

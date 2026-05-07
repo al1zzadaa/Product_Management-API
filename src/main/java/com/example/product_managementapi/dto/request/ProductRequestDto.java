@@ -3,13 +3,14 @@ package com.example.product_managementapi.dto.request;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.util.List;
 
 public class ProductRequestDto {
     private String productName;
     private String description;
     private BigDecimal price;
     private Integer quantity;
-    private Long categoryId;
+    private List<Long> categoryIds;
     private String active;
     private LocalDateTime createDate;
 
@@ -20,8 +21,8 @@ public class ProductRequestDto {
                 ", description='" + description + '\'' +
                 ", price=" + price +
                 ", quantity=" + quantity +
-                ", categoryId=" + categoryId +
-                ", active=" + active +
+                ", categoryIds=" + categoryIds +
+                ", active='" + active + '\'' +
                 ", createDate=" + createDate +
                 '}';
     }
@@ -58,12 +59,12 @@ public class ProductRequestDto {
         this.quantity = quantity;
     }
 
-    public Long getCategoryId() {
-        return categoryId;
+    public List<Long> getCategoryIds() {
+        return categoryIds;
     }
 
-    public void setCategoryId(Long categoryId) {
-        this.categoryId = categoryId;
+    public void setCategoryIds(List<Long> categoryIds) {
+        this.categoryIds = categoryIds;
     }
 
     public String getActive() {
@@ -82,13 +83,13 @@ public class ProductRequestDto {
         this.createDate = createDate;
     }
 
-    public ProductRequestDto(String productName, String description, BigDecimal price, Integer quantity, Long categoryId, String active) {
+    public ProductRequestDto(String productName, String description, BigDecimal price, Integer quantity, List<Long> categoryIds, String active, LocalDateTime createDate) {
         this.productName = productName;
         this.description = description;
         this.price = price;
         this.quantity = quantity;
-        this.categoryId = categoryId;
-        this.active = active.toUpperCase();
-        this.createDate = LocalDateTime.now();
+        this.categoryIds = categoryIds;
+        this.active = active;
+        this.createDate = createDate;
     }
 }

@@ -3,6 +3,7 @@ package com.example.product_managementapi.mapper;
 import com.example.product_managementapi.dto.request.ProductRequestDto;
 import com.example.product_managementapi.dto.response.ProductResponseDto;
 import com.example.product_managementapi.dto.request.UpdateProductRequestDto;
+import com.example.product_managementapi.entity.CategoryEntity;
 import com.example.product_managementapi.entity.ProductEntity;
 import com.example.product_managementapi.entity.ReviewEntity;
 import org.mapstruct.*;
@@ -13,7 +14,6 @@ import java.util.List;
 public interface ProductMapper {
 
     @Mapping(source = "productName", target = "name")
-    @Mapping(source = "categoryId", target = "category.id")
     ProductEntity productToProductEntity(ProductRequestDto productRequest);
 
 
@@ -23,9 +23,12 @@ public interface ProductMapper {
 //    @Mapping(target = "allReviews",
 //            expression = "java(productEntity.getReviews().stream().map(ReviewEntity :: getReviews).toList())")
     @Mapping(source = "reviews", target = "allReviews")
-    @Mapping(source = "category.id", target = "categoryId")
     ProductResponseDto productEntityToProduct(ProductEntity productEntity);
 
+
+    default String map(CategoryEntity category) {
+        return category.getName();
+    }
 
     default String map(ReviewEntity review) {
         return review.getReview();
@@ -34,7 +37,6 @@ public interface ProductMapper {
     @Mapping(target = "createdAt", ignore = true)
     @Mapping(target = "id", ignore = true)
     @BeanMapping(nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
-    @Mapping(source = "categoryId", target = "category.id")
     void updateProduct(UpdateProductRequestDto updateProductRequestDto, @MappingTarget ProductEntity productEntity);
 
 

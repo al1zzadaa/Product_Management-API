@@ -12,6 +12,7 @@ import java.util.List;
 
 import jakarta.persistence.*;
 import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
 
 
 @Entity
@@ -25,9 +26,12 @@ public class ProductEntity {
     private String description;
     private BigDecimal price;
     private Integer quantity;
-    @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "category_id")
-    private CategoryEntity category;
+    @ManyToMany(fetch = FetchType.LAZY)
+    @JoinTable(
+            name = "products_categories",
+            joinColumns = @JoinColumn(name = "product_id"),
+            inverseJoinColumns = @JoinColumn(name = "category_id"))
+    private List<CategoryEntity> categories;
     @Enumerated(EnumType.STRING)
     private ProductStatus active;
     @CreationTimestamp
@@ -36,11 +40,8 @@ public class ProductEntity {
     //bcs if we delete from list it can still stay in db
     @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<ReviewEntity> reviews;
-
-
-
-
-
+    @UpdateTimestamp
+    private LocalDateTime updateDate;
 
     public Long getId() {
         return id;
@@ -82,12 +83,12 @@ public class ProductEntity {
         this.quantity = quantity;
     }
 
-    public CategoryEntity getCategory() {
-        return category;
+    public List<CategoryEntity> getCategories() {
+        return categories;
     }
 
-    public void setCategory(CategoryEntity category) {
-        this.category = category;
+    public void setCategories(List<CategoryEntity> categories) {
+        this.categories = categories;
     }
 
     public ProductStatus getActive() {
@@ -112,5 +113,13 @@ public class ProductEntity {
 
     public void setReviews(List<ReviewEntity> reviews) {
         this.reviews = reviews;
+    }
+
+    public LocalDateTime getUpdateDate() {
+        return updateDate;
+    }
+
+    public void setUpdateDate(LocalDateTime updateDate) {
+        this.updateDate = updateDate;
     }
 }
