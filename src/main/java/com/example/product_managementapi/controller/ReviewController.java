@@ -35,7 +35,4 @@ public class ReviewController {
     public List<ReviewResponse> getReviewsByProductId(@PathVariable Long productId) {
         return reviewService.findReviewsByProductId(productId);
     }
-
-
-
 }

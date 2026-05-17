@@ -28,7 +28,4 @@ public class GlobalExceptionHandler {
     public ExceptionResponse handleException(ValidationException e) {
         return new ExceptionResponse(e.getMessage());
     }
-
-
-
 }

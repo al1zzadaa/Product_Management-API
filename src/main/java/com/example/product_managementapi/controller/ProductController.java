@@ -72,5 +72,4 @@ public class ProductController {
         return productService.getProductsByCategory(categoryName, active);
     }
 
-
 }
