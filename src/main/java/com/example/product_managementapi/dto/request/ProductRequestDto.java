@@ -17,7 +17,7 @@ public class ProductRequestDto {
     private String description;
     private BigDecimal price;
     private Integer quantity;
-    private List<Long> categoryIds;
+    private String category;
     private String active;
     private LocalDateTime createDate;
 }

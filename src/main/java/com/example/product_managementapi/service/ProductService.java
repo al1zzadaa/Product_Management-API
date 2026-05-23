@@ -1,7 +1,6 @@
 package com.example.product_managementapi.service;
 
 import com.example.product_managementapi.dto.ProductFilterDto;
-import com.example.product_managementapi.dto.ReviewFilterDto;
 import com.example.product_managementapi.dto.request.UpdateProductRequestDto;
 import com.example.product_managementapi.dto.response.DiscountedPriceResponse;
 import com.example.product_managementapi.dto.request.ProductRequestDto;
@@ -68,8 +67,6 @@ public class ProductService {
     public List<ProductResponseDto> getProducts(ProductFilterDto productFilterDto) {
 
         var specification = Specification.where(new ProductSpecification(productFilterDto));
-
-        System.out.println("zzzzzzzzzz");
 
         List<ProductEntity> productEntities = productRepository.findAll(specification);
 
@@ -143,7 +140,7 @@ public class ProductService {
 
         validationUtil.validateId(category);
 
-        List<ProductEntity> productEntities = productRepository.findByCategoriesId(category);
+        List<ProductEntity> productEntities = productRepository.findByCategoryId(category);
         return productMapper.productEntitiesToProduct(productEntities);
     }
 

@@ -6,11 +6,10 @@ import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
 
-@Data
-@AllArgsConstructor
-@NoArgsConstructor
-public class ReviewFilterDto {
-
-    private LocalDate fromReviewDate;
-    private LocalDate toReviewDate;
-}
+//@Data
+//@AllArgsConstructor
+//@NoArgsConstructor
+//public class ReviewFilterDto {
+//
+//
+//}

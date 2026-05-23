@@ -19,8 +19,7 @@ public interface ProductRepository extends JpaRepository<ProductEntity, Long>,
 
     List<ProductEntity> findByPriceBetween(BigDecimal min, BigDecimal max);
 
-
-    List<ProductEntity> findByCategoriesId(Long categoryId);
+    List<ProductEntity> findByCategoryId(Long categoryId);
 
 //    @EntityGraph(attributePaths = {"reviews", "categories"})
 //    List<ProductEntity> findAll(Specification<ProductEntity> spec);

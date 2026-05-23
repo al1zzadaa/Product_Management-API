@@ -33,12 +33,13 @@ public class ProductEntity {
     private BigDecimal price;
     private Integer quantity;
     @ManyToOne(fetch = FetchType.EAGER)
+//    @ManyToMany
 //    @JoinTable(
 //            name = "products_categories",
 //            joinColumns = @JoinColumn(name = "product_id"),
 //            inverseJoinColumns = @JoinColumn(name = "category_id"))
     @JoinColumn(name = "categories_id")
-    private CategoryEntity categories;
+    private CategoryEntity category;
     @Enumerated(EnumType.STRING)
     private ProductStatus active;
     @CreationTimestamp

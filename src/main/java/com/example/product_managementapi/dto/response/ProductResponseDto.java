@@ -19,7 +19,7 @@ public class ProductResponseDto {
     private BigDecimal price;
     private Integer quantity;
     private String active;
-    private String categories;
+    private String category;
     private LocalDateTime createdAt;
     private List<String> allReviews;
     private BigDecimal totalPrice;

@@ -14,16 +14,14 @@ import java.util.List;
 public interface ProductMapper {
 
     @Mapping(source = "productName", target = "name")
+    @Mapping(source = "category", target = "category.name")
     ProductEntity productToProductEntity(ProductRequestDto productRequest);
 
 
     @Mapping(target = "totalPrice",
             expression = "java(productEntity.getPrice().multiply(BigDecimal.valueOf(productEntity.getQuantity())))")
     @Mapping(source = "name", target = "productName")
-//    @Mapping(target = "allReviews",
-//            expression = "java(productEntity.getReviews().stream().map(ReviewEntity :: getReviews).toList())")
     @Mapping(source = "reviews", target = "allReviews")
-//    @Mapping(source = "", target = "")
     ProductResponseDto productEntityToProduct(ProductEntity productEntity);
 
 

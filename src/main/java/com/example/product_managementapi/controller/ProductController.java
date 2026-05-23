@@ -1,7 +1,6 @@
 package com.example.product_managementapi.controller;
 
 import com.example.product_managementapi.dto.ProductFilterDto;
-import com.example.product_managementapi.dto.ReviewFilterDto;
 import com.example.product_managementapi.dto.request.ProductRequestDto;
 import com.example.product_managementapi.dto.request.UpdateProductRequestDto;
 import com.example.product_managementapi.dto.response.ProductResponseDto;

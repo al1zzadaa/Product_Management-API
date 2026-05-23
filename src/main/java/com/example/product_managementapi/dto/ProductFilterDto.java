@@ -16,6 +16,8 @@ public class ProductFilterDto {
     private BigDecimal maxPrice;
     private LocalDate fromDate;
     private LocalDate toDate;
-    private ReviewFilterDto reviewFilterDto;
-//    private List<String> category;
+//    private ReviewFilterDto reviewFilterDto;
+    private List<String> category;
+    private LocalDate fromReviewDate;
+    private LocalDate toReviewDate;
 }

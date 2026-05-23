@@ -1,7 +1,7 @@
 package com.example.product_managementapi.service.specification;
 
 import com.example.product_managementapi.dto.ProductFilterDto;
-import com.example.product_managementapi.dto.ReviewFilterDto;
+import com.example.product_managementapi.entity.CategoryEntity;
 import com.example.product_managementapi.entity.ProductEntity;
 import com.example.product_managementapi.entity.ReviewEntity;
 import jakarta.persistence.criteria.*;
@@ -34,7 +34,6 @@ public class ProductSpecification implements Specification<ProductEntity> {
 
         if (productFilterDto.getName() != null && !productFilterDto.getName().isEmpty()) {
             predicates.add(criteriaBuilder.like(root.get("name").as(String.class), productFilterDto.getName() + "%"));
-            System.out.println("aaa");
         }
 
         if (productFilterDto.getMinPrice() != null) {
@@ -45,49 +44,51 @@ public class ProductSpecification implements Specification<ProductEntity> {
             predicates.add(criteriaBuilder.lessThanOrEqualTo(root.get("price").as(BigDecimal.class), productFilterDto.getMaxPrice())) ;
         }
 
-//        if (productFilterDto.getCategory() != null) {
-//            List<String> categories = productFilterDto.getCategory();
-//            predicates.add(root.get("categories").in(categories));
-//        }
+        if (productFilterDto.getCategory() != null) {
+            List<String> categories = productFilterDto.getCategory();
+
+            Join<ProductEntity, CategoryEntity> categoryJoin =
+                    root.join("category");
+            predicates.add(categoryJoin.get("name").in(categories));
+        }
 
         if (productFilterDto.getFromDate() != null ) {
             LocalDate fromDate = productFilterDto.getFromDate();
-            predicates.add(criteriaBuilder.greaterThanOrEqualTo(root.get("createdAt").as(LocalDate.class), fromDate)) ;
+            predicates.add(criteriaBuilder.greaterThanOrEqualTo(root.get("createdAt"), fromDate)) ;
         }
 
         if (productFilterDto.getToDate() != null) {
             LocalDate toDate = productFilterDto.getToDate();
-            predicates.add(criteriaBuilder.lessThanOrEqualTo(root.get("createdAt").as(LocalDate.class), toDate)) ;
+            predicates.add(criteriaBuilder.lessThanOrEqualTo(root.get("createdAt"), toDate)) ;
         }
 
-        if (productFilterDto.getReviewFilterDto() != null) {
 
-            var reviewFilterDto = productFilterDto.getReviewFilterDto();
+        if (productFilterDto.getFromReviewDate() != null) {
 
             Join<ProductEntity, ReviewEntity> reviewJoin =
-                    root.join("reviews", JoinType.INNER);
+                    root.join("reviews");
 
-            if (reviewFilterDto.getFromReviewDate() != null) {
+            LocalDate fromReviewDate = productFilterDto.getFromReviewDate();
+            predicates.add(
+                    criteriaBuilder.greaterThanOrEqualTo(
+                            reviewJoin.get("reviewDate"),
+                            fromReviewDate
+                    )
+            );
+        }
 
-                LocalDate fromReviewDate = reviewFilterDto.getFromReviewDate();
-                predicates.add(
-                        criteriaBuilder.greaterThanOrEqualTo(
-                                reviewJoin.get("reviewDate"),
-                                fromReviewDate
-                        )
-                );
-            }
+        if (productFilterDto.getToReviewDate() != null) {
 
-            if (reviewFilterDto.getToReviewDate() != null) {
+            Join<ProductEntity, ReviewEntity> reviewJoin =
+                    root.join("reviews");
 
-                LocalDate toReviewDate = reviewFilterDto.getToReviewDate();
-                predicates.add(
-                        criteriaBuilder.lessThanOrEqualTo(
-                                reviewJoin.get("reviewDate"),
-                                toReviewDate
-                        )
-                );
-            }
+            LocalDate toReviewDate = productFilterDto.getToReviewDate();
+            predicates.add(
+                    criteriaBuilder.lessThanOrEqualTo(
+                            reviewJoin.get("reviewDate"),
+                            toReviewDate
+                    )
+            );
         }
         query.distinct(true);
 
