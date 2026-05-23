@@ -1,5 +1,7 @@
 package com.example.product_managementapi.service;
 
+import com.example.product_managementapi.dto.ProductFilterDto;
+import com.example.product_managementapi.dto.ReviewFilterDto;
 import com.example.product_managementapi.dto.request.UpdateProductRequestDto;
 import com.example.product_managementapi.dto.response.DiscountedPriceResponse;
 import com.example.product_managementapi.dto.request.ProductRequestDto;
@@ -9,7 +11,9 @@ import com.example.product_managementapi.enums.ProductStatus;
 import com.example.product_managementapi.exceptions.*;
 import com.example.product_managementapi.mapper.ProductMapper;
 import com.example.product_managementapi.repository.ProductRepository;
+import com.example.product_managementapi.service.specification.ProductSpecification;
 import com.example.product_managementapi.utill.ValidationUtil;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
@@ -61,9 +65,13 @@ public class ProductService {
         return productResponseDto;
     }
 
-    public List<ProductResponseDto> getProducts() {
+    public List<ProductResponseDto> getProducts(ProductFilterDto productFilterDto) {
 
-        List<ProductEntity> productEntities = productRepository.findAll();
+        var specification = Specification.where(new ProductSpecification(productFilterDto));
+
+        System.out.println("zzzzzzzzzz");
+
+        List<ProductEntity> productEntities = productRepository.findAll(specification);
 
         return productMapper.productEntitiesToProduct(productEntities);
     }
@@ -140,15 +148,19 @@ public class ProductService {
     }
 
 
-    public List<ProductResponseDto> getProductsByCategory(String category, ProductStatus active) {
+//    public List<ProductResponseDto> getProductsByCategory(String category, ProductStatus active) {
+//
+//        validationUtil.validateName(category);
+//
+//        validationUtil.validateStatus(active);
+//
+//        List<ProductEntity> productEntities = productRepository.findActiveProductsByCategoryNameAndActive(category, active);
+//        return productMapper.productEntitiesToProduct(productEntities);
+//    }
 
-        validationUtil.validateName(category);
 
-        validationUtil.validateStatus(active);
 
-        List<ProductEntity> productEntities = productRepository.findActiveProductsByCategoryNameAndActive(category, active);
-        return productMapper.productEntitiesToProduct(productEntities);
-    }
+
 
 
 }

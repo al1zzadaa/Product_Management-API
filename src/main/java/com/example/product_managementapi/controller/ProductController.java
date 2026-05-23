@@ -1,11 +1,14 @@
 package com.example.product_managementapi.controller;
 
+import com.example.product_managementapi.dto.ProductFilterDto;
+import com.example.product_managementapi.dto.ReviewFilterDto;
 import com.example.product_managementapi.dto.request.ProductRequestDto;
 import com.example.product_managementapi.dto.request.UpdateProductRequestDto;
 import com.example.product_managementapi.dto.response.ProductResponseDto;
 import com.example.product_managementapi.dto.response.DiscountedPriceResponse;
 import com.example.product_managementapi.enums.ProductStatus;
 import com.example.product_managementapi.service.ProductService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
 import java.math.BigDecimal;
@@ -13,12 +16,9 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/products")
+@RequiredArgsConstructor
 public class ProductController {
     private final ProductService productService;
-
-    public ProductController(ProductService productService) {
-        this.productService = productService;
-    }
 
     @PostMapping
     public ProductResponseDto createProduct(@RequestBody ProductRequestDto productRequestDto) {
@@ -26,8 +26,8 @@ public class ProductController {
     }
 
     @GetMapping
-    public List<ProductResponseDto> getAllProducts() {
-        return productService.getProducts();
+    public List<ProductResponseDto> getAllProducts(ProductFilterDto productFilterDto) {
+        return productService.getProducts(productFilterDto);
     }
 
     @DeleteMapping("/{id}")
@@ -67,9 +67,9 @@ public class ProductController {
         productService.updateProduct(productId, updateProductRequestDto);
     }
 
-    @GetMapping("/active-category")
-    public List<ProductResponseDto> getActiveProductsByCategory(@RequestParam String categoryName, @RequestParam ProductStatus active) {
-        return productService.getProductsByCategory(categoryName, active);
-    }
+//    @GetMapping("/active-category")
+//    public List<ProductResponseDto> getActiveProductsByCategory(@RequestParam String categoryName, @RequestParam ProductStatus active) {
+//        return productService.getProductsByCategory(categoryName, active);
+//    }
 
 }

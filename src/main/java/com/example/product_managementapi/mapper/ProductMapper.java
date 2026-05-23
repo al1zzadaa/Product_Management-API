@@ -10,7 +10,7 @@ import org.mapstruct.*;
 
 import java.util.List;
 
-@Mapper(componentModel = "spring")
+@Mapper(componentModel = "spring", uses = CategoryMapper.class)
 public interface ProductMapper {
 
     @Mapping(source = "productName", target = "name")
@@ -23,6 +23,7 @@ public interface ProductMapper {
 //    @Mapping(target = "allReviews",
 //            expression = "java(productEntity.getReviews().stream().map(ReviewEntity :: getReviews).toList())")
     @Mapping(source = "reviews", target = "allReviews")
+//    @Mapping(source = "", target = "")
     ProductResponseDto productEntityToProduct(ProductEntity productEntity);
 
 

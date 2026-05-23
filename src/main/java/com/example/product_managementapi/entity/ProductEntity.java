@@ -32,12 +32,13 @@ public class ProductEntity {
     private String description;
     private BigDecimal price;
     private Integer quantity;
-    @ManyToMany(fetch = FetchType.LAZY)
-    @JoinTable(
-            name = "products_categories",
-            joinColumns = @JoinColumn(name = "product_id"),
-            inverseJoinColumns = @JoinColumn(name = "category_id"))
-    private List<CategoryEntity> categories;
+    @ManyToOne(fetch = FetchType.EAGER)
+//    @JoinTable(
+//            name = "products_categories",
+//            joinColumns = @JoinColumn(name = "product_id"),
+//            inverseJoinColumns = @JoinColumn(name = "category_id"))
+    @JoinColumn(name = "categories_id")
+    private CategoryEntity categories;
     @Enumerated(EnumType.STRING)
     private ProductStatus active;
     @CreationTimestamp
