@@ -7,6 +7,8 @@ import com.example.product_managementapi.exceptions.NotFoundException;
 import com.example.product_managementapi.mapper.ReviewMapper;
 import com.example.product_managementapi.repository.ReviewRepository;
 import com.example.product_managementapi.utill.ValidationUtil;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -45,12 +47,13 @@ public class ReviewService {
         return reviewMapper.reviewToReviewResponse(reviewEntity);
     }
 
-    public List<ReviewResponse> findReviewsByProductId(Long productId) {
+    public Page<ReviewResponse> findReviewsByProductId(Long productId, Pageable pageable) {
 
         validationUtil.validateId(productId);
 
-        List<ReviewEntity> reviewEntity = reviewRepository.findReviewsByProductId(productId);
-        return reviewMapper.reviewsToReviewResponses(reviewEntity);
+        Page<ReviewEntity> reviewEntity = reviewRepository.findReviewsByProductId(productId, pageable);
+
+        return reviewEntity.map(review -> reviewMapper.reviewToReviewResponse(review));
     }
 
     public void deleteReviewById(Long reviewId) {

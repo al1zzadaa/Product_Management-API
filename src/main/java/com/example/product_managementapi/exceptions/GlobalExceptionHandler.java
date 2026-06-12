@@ -13,6 +13,7 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(Exception.class)
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
     public ExceptionResponse handleException(Exception e) {
+        e.printStackTrace();
         return new ExceptionResponse("INTERNAL_SERVER_ERROR");
     }
 

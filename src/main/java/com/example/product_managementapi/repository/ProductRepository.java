@@ -21,8 +21,8 @@ public interface ProductRepository extends JpaRepository<ProductEntity, Long>,
 
     List<ProductEntity> findByCategoryId(Long categoryId);
 
-//    @EntityGraph(attributePaths = {"reviews", "categories"})
-//    List<ProductEntity> findAll(Specification<ProductEntity> spec);
+    @EntityGraph(attributePaths = {"reviews", "category"})
+    List<ProductEntity> findAll(Specification<ProductEntity> spec);
 
 //    @Query("SELECT DISTINCT p "+
 //            " FROM ProductEntity p "+

@@ -3,6 +3,9 @@ package com.example.product_managementapi.controller;
 import com.example.product_managementapi.dto.request.ReviewRequest;
 import com.example.product_managementapi.dto.response.ReviewResponse;
 import com.example.product_managementapi.service.ReviewService;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -32,7 +35,11 @@ public class ReviewController {
     }
 
     @GetMapping("/product/{productId}")
-    public List<ReviewResponse> getReviewsByProductId(@PathVariable Long productId) {
-        return reviewService.findReviewsByProductId(productId);
+    public Page<ReviewResponse> getReviewsByProductId(@PathVariable Long productId,
+                                                      @PageableDefault(size = 5) Pageable pageable) {
+        return reviewService.findReviewsByProductId(productId, pageable);
     }
+
+
+
 }
