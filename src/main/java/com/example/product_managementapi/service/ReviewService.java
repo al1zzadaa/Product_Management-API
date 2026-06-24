@@ -53,7 +53,7 @@ public class ReviewService {
 
         Page<ReviewEntity> reviewEntity = reviewRepository.findReviewsByProductId(productId, pageable);
 
-        return reviewEntity.map(review -> reviewMapper.reviewToReviewResponse(review));
+        return reviewEntity.map(reviewMapper::reviewToReviewResponse);
     }
 
     public void deleteReviewById(Long reviewId) {

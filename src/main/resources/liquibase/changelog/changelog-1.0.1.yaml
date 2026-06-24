@@ -1,0 +1,19 @@
+databaseChangeLog:
+  - changeSet:
+      id: added-new-column
+      author: Sadiq
+      changes:
+        changes:
+          - addColumn:
+              tableName: test
+              columns:
+                - column:
+                    name: birthdate
+                    type: TIMESTAMP
+                    constraints:
+                      nullable: false
+
+        rollback:
+          - dropColumn:
+              tableName: test
+              columnName: birthdate

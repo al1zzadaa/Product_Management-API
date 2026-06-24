@@ -96,4 +96,5 @@ public class CategoryService {
 
         return categoryMapper.toListDto(categoryEntities);
     }
+
 }

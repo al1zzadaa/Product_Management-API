@@ -2,6 +2,26 @@ plugins {
     id 'java'
     id 'org.springframework.boot' version '4.0.6'
     id 'io.spring.dependency-management' version '1.1.7'
+    id 'org.liquibase.gradle' version '2.2.0'
+    id 'groovy'
+
+}
+
+test {
+    useJUnitPlatform()
+}
+
+
+liquibase {
+    activities {
+        main{
+            changelogFile 'src/main/resources/liquibase/changelog-master.yaml'
+
+            url 'jdbc:postgresql://localhost:5432/postgres?currentSchema=product_schema'
+            username 'postgres'
+            password 'sadiqqidas777'
+        }
+    }
 }
 
 group = 'com.example'
@@ -25,8 +45,11 @@ dependencies {
 
     implementation 'org.springdoc:springdoc-openapi-starter-webmvc-ui:2.8.9'
 
-//    implementation 'org.liquibase:liquibase-core'
-//    implementation 'org.springframework.boot:spring-boot-starter-liquibase'
+    implementation 'org.liquibase:liquibase-core'
+    implementation 'org.springframework.boot:spring-boot-starter-liquibase'
+    implementation 'org.springframework.boot:spring-boot-starter-security'
+    testImplementation 'org.springframework.security:spring-security-test'
+
     // Lombok
     compileOnly 'org.projectlombok:lombok'
     annotationProcessor 'org.projectlombok:lombok'
@@ -39,6 +62,14 @@ dependencies {
     annotationProcessor 'org.projectlombok:lombok-mapstruct-binding:0.2.0'
 
     // Spring
+
+
+    testImplementation 'org.spockframework:spock-core:2.4-M6-groovy-4.0'
+    testImplementation 'org.spockframework:spock-spring:2.4-M6-groovy-4.0'
+
+
+
+
     implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
     implementation 'org.springframework.boot:spring-boot-starter-webmvc'
 
